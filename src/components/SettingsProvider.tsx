@@ -13,6 +13,10 @@ type SettingsContextType = {
   setExcludedNumbers: Dispatch<React.SetStateAction<number[]>>;
   cageSizes: number[];
   setCageSizes: Dispatch<React.SetStateAction<number[]>>;
+  minTotal: number;
+  setMinTotal: Dispatch<React.SetStateAction<number>>;
+  maxTotal: number;
+  setMaxTotal: Dispatch<React.SetStateAction<number>>;
 };
 
 const SettingsContext = createContext<SettingsContextType | undefined>(
@@ -25,6 +29,8 @@ const SettingsProvider = ({ children }: { children: ReactNode }) => {
   const [cageSizes, setCageSizes] = useState<number[]>([
     1, 2, 3, 4, 5, 6, 7, 8, 9,
   ]);
+  const [minTotal, setMinTotal] = useState<number>(1);
+  const [maxTotal, setMaxTotal] = useState<number>(45);
 
   return (
     <SettingsContext.Provider
@@ -35,6 +41,10 @@ const SettingsProvider = ({ children }: { children: ReactNode }) => {
         setExcludedNumbers,
         cageSizes,
         setCageSizes,
+        minTotal,
+        setMinTotal,
+        maxTotal,
+        setMaxTotal,
       }}
     >
       {children}

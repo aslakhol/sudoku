@@ -21,6 +21,8 @@ import {
 } from "./ui/drawer";
 import { useMediaQuery } from "../lib/useMediaQuery";
 import { useSettingsContext } from "./SettingsProvider";
+import { Label } from "./ui/label";
+import { Input } from "./ui/input";
 
 export const Settings = () => {
   const [open, setOpen] = React.useState(false);
@@ -79,6 +81,10 @@ const Content = ({ className }: ContentProps) => {
     setIncludedNumbers,
     excludedNumbers,
     setExcludedNumbers,
+    minTotal,
+    setMinTotal,
+    maxTotal,
+    setMaxTotal,
   } = useSettingsContext();
 
   const pressNumber = (number: number) => {
@@ -104,21 +110,43 @@ const Content = ({ className }: ContentProps) => {
   };
 
   return (
-    <div className={cn("flex gap-2", className)}>
-      {numbers.map((number) => (
-        <NumberButton
-          key={number}
-          number={number}
-          onClick={pressNumber}
-          status={
-            includedNumbers.includes(number)
-              ? "included"
-              : excludedNumbers.includes(number)
-                ? "excluded"
-                : "none"
-          }
-        />
-      ))}
+    <div className={cn("flex flex-col gap-2", className)}>
+      <div className="flex gap-2">
+        {numbers.map((number) => (
+          <NumberButton
+            key={number}
+            number={number}
+            onClick={pressNumber}
+            status={
+              includedNumbers.includes(number)
+                ? "included"
+                : excludedNumbers.includes(number)
+                  ? "excluded"
+                  : "none"
+            }
+          />
+        ))}
+      </div>
+      <div className="flex flex-col gap-2">
+        <div className="flex w-full max-w-sm items-center gap-1.5">
+          <Label htmlFor="minTotal">Minimum sum</Label>
+          <Input
+            type="number"
+            id="minTotal"
+            value={minTotal}
+            onChange={(e) => setMinTotal(Number(e.target.value))}
+          />
+        </div>
+        <div className="flex w-full max-w-sm items-center gap-1.5">
+          <Label htmlFor="maxTotal">Maximum sum</Label>
+          <Input
+            type="number"
+            id="maxTotal"
+            value={maxTotal}
+            onChange={(e) => setMaxTotal(Number(e.target.value))}
+          />
+        </div>
+      </div>
     </div>
   );
 };
