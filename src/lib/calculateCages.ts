@@ -38,3 +38,11 @@ export function findCombinations(
 
   return validCombinations;
 }
+
+export const minSum = (cageSize: number) => {
+  return (cageSize * (cageSize + 1)) / 2;
+};
+
+export const maxSum = (cageSize: number) => {
+  return (cageSize * (19 - cageSize)) / 2;
+};

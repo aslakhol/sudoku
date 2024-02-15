@@ -1,21 +1,7 @@
 import Head from "next/head";
-import { Button } from "../components/ui/button";
-import { Label } from "../components/ui/label";
-import { Input } from "../components/ui/input";
-import { useState } from "react";
-import { findCombinations } from "../lib/calculateCages";
+import { findCombinations, maxSum, minSum } from "../lib/calculateCages";
 
 export default function Home() {
-  const [cageSize, setCageSize] = useState(1);
-  const [cageTotal, setCageTotal] = useState(1);
-  const [validCombinations, setValidCombinations] = useState<number[][]>([[]]);
-  console.log(cageSize, cageTotal);
-
-  const trigger = () => {
-    console.log(cageSize, cageTotal);
-    setValidCombinations(findCombinations(cageTotal, cageSize));
-  };
-
   return (
     <>
       <Head>
@@ -24,34 +10,63 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-          <div className="grid w-full max-w-sm items-center gap-1.5">
-            <Label htmlFor="cageSize">Cage size</Label>
-            <Input
-              type="number"
-              id="cageSize"
-              value={cageSize}
-              onChange={(e) => setCageSize(Number(e.target.value))}
-              min={1}
-              max={9}
-            />
-          </div>
-          <div className="grid w-full max-w-sm items-center gap-1.5">
-            <Label htmlFor="cageTotal">Cage total</Label>
-            <Input
-              type="number"
-              id="cageTotal"
-              value={cageTotal}
-              onChange={(e) => setCageTotal(Number(e.target.value))}
-            />
-          </div>
-          <Button onClick={trigger}>Find combinations</Button>
-          <Combinations combinations={validCombinations} />
+        <div className="container flex flex-col gap-4">
+          <CageSizes />
         </div>
       </main>
     </>
   );
 }
+
+const CageSizes = () => {
+  const cageSizes = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  return (
+    <>
+      {cageSizes.map((cageSize) => (
+        <CageSize key={cageSize} cageSize={cageSize} />
+      ))}
+    </>
+  );
+};
+
+type CageSizeProps = { cageSize: number };
+
+const CageSize = ({ cageSize }: CageSizeProps) => {
+  const min = minSum(cageSize);
+  const max = maxSum(cageSize);
+
+  const valuesBetweenMaxAndMin = Array.from(
+    { length: max - min + 1 },
+    (_, i) => min + i,
+  );
+
+  return (
+    <div>
+      <p className="text-xl">Cages with {cageSize} squares</p>
+      <div className="flex flex-col">
+        <div className=" flex gap-2 font-semibold">
+          <p>Total</p>
+          <p>Combinations</p>
+        </div>
+        {valuesBetweenMaxAndMin.map((value) => (
+          <Total key={value} cageSize={cageSize} cageTotal={value} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+type TotalProps = { cageSize: number; cageTotal: number };
+
+const Total = ({ cageSize, cageTotal }: TotalProps) => {
+  const combinations = findCombinations(cageTotal, cageSize);
+  return (
+    <div className="flex gap-2">
+      <p className="w-9">{cageTotal}</p>
+      <Combinations combinations={combinations} />
+    </div>
+  );
+};
 
 type CombinationsProps = { combinations: number[][] };
 
