@@ -16,6 +16,7 @@ export const Cages = () => {
 type CageSizeProps = { cageSize: number };
 
 const CageSize = ({ cageSize }: CageSizeProps) => {
+  const { minTotal, maxTotal } = useSettingsContext();
   const min = minSum(cageSize);
   const max = maxSum(cageSize);
 
@@ -23,6 +24,10 @@ const CageSize = ({ cageSize }: CageSizeProps) => {
     { length: max - min + 1 },
     (_, i) => min + i,
   );
+
+  if (minTotal > max || maxTotal < min) {
+    return null;
+  }
 
   return (
     <div>
