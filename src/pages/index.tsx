@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { findCombinations, maxSum, minSum } from "../lib/calculateCages";
+import { Settings } from "../components/Settings";
 
 export default function Home() {
   const cageSizes = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -13,6 +14,7 @@ export default function Home() {
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center">
         <div className="container flex flex-col gap-4">
+          <Settings />
           {cageSizes.map((cageSize) => (
             <CageSize key={cageSize} cageSize={cageSize} />
           ))}
