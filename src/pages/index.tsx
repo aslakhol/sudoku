@@ -13,11 +13,13 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center">
-        <div className="container flex flex-col gap-4">
-          <Settings />
+        <div className="container flex flex-col gap-4 pb-12">
           {cageSizes.map((cageSize) => (
             <CageSize key={cageSize} cageSize={cageSize} />
           ))}
+        </div>
+        <div className="fixed bottom-0 py-2">
+          <Settings />
         </div>
       </main>
     </>
