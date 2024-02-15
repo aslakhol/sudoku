@@ -44,7 +44,12 @@ type TotalProps = { cageSize: number; cageTotal: number };
 
 const Total = ({ cageSize, cageTotal }: TotalProps) => {
   const combinations = findCombinations(cageTotal, cageSize);
-  const { includedNumbers, excludedNumbers } = useSettingsContext();
+  const { includedNumbers, excludedNumbers, minTotal, maxTotal } =
+    useSettingsContext();
+
+  if (cageTotal < minTotal || cageTotal > maxTotal) {
+    return null;
+  }
 
   const withOutExcluded = combinations.filter((comb) =>
     excludedNumbers.every((num) => !comb.includes(num)),
