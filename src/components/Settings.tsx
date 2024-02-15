@@ -20,6 +20,7 @@ import {
   Drawer,
 } from "./ui/drawer";
 import { useMediaQuery } from "../lib/useMediaQuery";
+import { useSettingsContext } from "./SettingsProvider";
 
 export const Settings = () => {
   const [open, setOpen] = React.useState(false);
@@ -73,8 +74,12 @@ type ContentProps = { className?: string };
 
 const Content = ({ className }: ContentProps) => {
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-  const [includedNumbers, setIncludedNumbers] = useState<number[]>([]);
-  const [excludedNumbers, setExcludedNumbers] = useState<number[]>([]);
+  const {
+    includedNumbers,
+    setIncludedNumbers,
+    excludedNumbers,
+    setExcludedNumbers,
+  } = useSettingsContext();
 
   const pressNumber = (number: number) => {
     if (includedNumbers.includes(number)) {

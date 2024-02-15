@@ -1,4 +1,5 @@
 import { findCombinations, maxSum, minSum } from "../lib/calculateCages";
+import { useSettingsContext } from "./SettingsProvider";
 
 export const Cages = () => {
   const cageSizes = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -43,10 +44,24 @@ type TotalProps = { cageSize: number; cageTotal: number };
 
 const Total = ({ cageSize, cageTotal }: TotalProps) => {
   const combinations = findCombinations(cageTotal, cageSize);
+  const { includedNumbers, excludedNumbers } = useSettingsContext();
+
+  const withOutExcluded = combinations.filter((comb) =>
+    excludedNumbers.every((num) => !comb.includes(num)),
+  );
+
+  const withIncluded = withOutExcluded.filter((comb) =>
+    includedNumbers.every((num) => comb.includes(num)),
+  );
+
+  if (withIncluded.length === 0) {
+    return null;
+  }
+
   return (
     <div className="flex gap-2">
       <p className="w-9">{cageTotal}</p>
-      <Combinations combinations={combinations} />
+      <Combinations combinations={withIncluded} />
     </div>
   );
 };
