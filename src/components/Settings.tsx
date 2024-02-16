@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Dialog,
   DialogContent,
@@ -111,20 +111,22 @@ const Content = ({ className }: ContentProps) => {
 
   return (
     <div className={cn("flex flex-col gap-2", className)}>
-      <div className="flex gap-2">
+      <div className="space-between flex flex-wrap gap-2">
         {numbers.map((number) => (
-          <NumberButton
-            key={number}
-            number={number}
-            onClick={pressNumber}
-            status={
-              includedNumbers.includes(number)
-                ? "included"
-                : excludedNumbers.includes(number)
-                  ? "excluded"
-                  : "none"
-            }
-          />
+          <>
+            <NumberButton
+              key={number}
+              number={number}
+              onClick={pressNumber}
+              status={
+                includedNumbers.includes(number)
+                  ? "included"
+                  : excludedNumbers.includes(number)
+                    ? "excluded"
+                    : "none"
+              }
+            />
+          </>
         ))}
       </div>
       <div className="flex flex-col gap-2">
