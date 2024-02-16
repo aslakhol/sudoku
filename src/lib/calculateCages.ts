@@ -56,20 +56,28 @@ export const findAllCombinationsForCageSize = (cageSize: number) => {
     (_, i) => min + i,
   );
 
-  const combinationsForCageSize: Record<number, number[][]> = {};
+  const combinationsForCageSize: CageSize = { cageSize, cageTotals: [] };
 
   for (const value of valuesBetweenMaxAndMin) {
-    combinationsForCageSize[value] = findCombinations(value, cageSize);
+    combinationsForCageSize.cageTotals.push({
+      total: value,
+      combinations: findCombinations(value, cageSize),
+    });
   }
 
   return combinationsForCageSize;
 };
 
+export type CageSize = {
+  cageSize: number;
+  cageTotals: { total: number; combinations: number[][] }[];
+};
+
 export const findAllCombinations = () => {
-  const allCombinations: Record<number, Record<number, number[][]>> = {};
+  const allCombinations: CageSize[] = [];
 
   for (let i = 1; i <= 9; i++) {
-    allCombinations[i] = findAllCombinationsForCageSize(i);
+    allCombinations.push(findAllCombinationsForCageSize(i));
   }
 
   return allCombinations;
@@ -78,10 +86,10 @@ export const findAllCombinations = () => {
 export const writeResultsToFile = () => {
   const combinations = findAllCombinations();
 
-  console.log(combinations);
+  const filename = `cageSizes.ts`;
 
-  const filename = `combinations.json`;
-  const fileContents = JSON.stringify(combinations, null, 2);
+  const fileContents = `import { type CageSize } from "./calculateCages";\n\nexport const cageSizes = ${JSON.stringify(combinations, null, 2)} as CageSize[];\n`;
+
   const blob = new Blob([fileContents], { type: "text/plain" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
