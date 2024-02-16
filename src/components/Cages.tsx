@@ -17,6 +17,7 @@ export const Cages = () => {
 type CageSizeProps = { cageSize: CageSize };
 
 const CageSize = ({ cageSize }: CageSizeProps) => {
+  const [faded, setFaded] = useState(false);
   const { cageTotalRange } = useSettingsContext();
   const minTotal = cageTotalRange[0];
   const maxTotal = cageTotalRange[1];
@@ -30,8 +31,10 @@ const CageSize = ({ cageSize }: CageSizeProps) => {
   }
 
   return (
-    <div>
-      <p className="text-xl">Cages with {cageSize.cageSize} squares</p>
+    <div className={cn(faded && "text-gray-400")}>
+      <p className="text-xl" onClick={() => setFaded((prev) => !prev)}>
+        Cages with {cageSize.cageSize} squares
+      </p>
       <div className="flex flex-col">
         <div className=" flex gap-2 font-semibold">
           <p>Total</p>
