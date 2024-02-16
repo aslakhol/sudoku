@@ -1,9 +1,4 @@
-import {
-  CageSize,
-  findCombinations,
-  maxSum,
-  minSum,
-} from "../lib/calculateCages";
+import { CageSize } from "../lib/calculateCages";
 import { cageSizes } from "../lib/cageSizes";
 import { useSettingsContext } from "./SettingsProvider";
 
@@ -20,6 +15,18 @@ export const Cages = () => {
 type CageSizeProps = { cageSize: CageSize };
 
 const CageSize = ({ cageSize }: CageSizeProps) => {
+  const { cageTotalRange } = useSettingsContext();
+  const minTotal = cageTotalRange[0];
+  const maxTotal = cageTotalRange[1];
+
+  const filteredTotals = cageSize.cageTotals.filter(
+    (ct) => ct.total >= minTotal && ct.total <= maxTotal,
+  );
+
+  if (filteredTotals.length === 0) {
+    return null;
+  }
+
   return (
     <div>
       <p className="text-xl">Cages with {cageSize.cageSize} squares</p>
@@ -28,7 +35,7 @@ const CageSize = ({ cageSize }: CageSizeProps) => {
           <p>Total</p>
           <p>Combinations</p>
         </div>
-        {cageSize.cageTotals.map((total) => (
+        {filteredTotals.map((total) => (
           <Total key={total.total} cageTotal={total} />
         ))}
       </div>
@@ -39,14 +46,7 @@ const CageSize = ({ cageSize }: CageSizeProps) => {
 type TotalProps = { cageTotal: { total: number; combinations: number[][] } };
 
 const Total = ({ cageTotal }: TotalProps) => {
-  const { includedNumbers, excludedNumbers, cageTotalRange } =
-    useSettingsContext();
-  const minTotal = cageTotalRange[0];
-  const maxTotal = cageTotalRange[1];
-
-  if (cageTotal.total < minTotal || cageTotal.total > maxTotal) {
-    return null;
-  }
+  const { includedNumbers, excludedNumbers } = useSettingsContext();
 
   const withOutExcluded = cageTotal.combinations.filter((comb) =>
     excludedNumbers.every((num) => !comb.includes(num)),
