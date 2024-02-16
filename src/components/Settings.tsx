@@ -109,9 +109,9 @@ const Content = ({ className }: ContentProps) => {
 
   return (
     <div className={cn("flex flex-col gap-2", className)}>
-      <div className="space-between flex flex-wrap gap-2">
-        {numbers.map((number) => (
-          <>
+      <div className="flex w-16 flex-col gap-2">
+        <div className="flex flex-row gap-2">
+          {numbers.slice(0, 3).map((number) => (
             <NumberButton
               key={number}
               number={number}
@@ -124,10 +124,42 @@ const Content = ({ className }: ContentProps) => {
                     : "none"
               }
             />
-          </>
-        ))}
+          ))}
+        </div>
+        <div className="flex flex-row gap-2">
+          {numbers.slice(3, 6).map((number) => (
+            <NumberButton
+              key={number}
+              number={number}
+              onClick={pressNumber}
+              status={
+                includedNumbers.includes(number)
+                  ? "included"
+                  : excludedNumbers.includes(number)
+                    ? "excluded"
+                    : "none"
+              }
+            />
+          ))}
+        </div>
+        <div className="flex flex-row gap-2">
+          {numbers.slice(6, 9).map((number) => (
+            <NumberButton
+              key={number}
+              number={number}
+              onClick={pressNumber}
+              status={
+                includedNumbers.includes(number)
+                  ? "included"
+                  : excludedNumbers.includes(number)
+                    ? "excluded"
+                    : "none"
+              }
+            />
+          ))}
+        </div>
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-3 pt-4">
         <Label htmlFor="cageTotalRange">Cage total</Label>
         <div className="flex w-full max-w-sm items-center gap-1.5">
           <Label htmlFor="cageTotalRange">{cageTotalRange[0]}</Label>
@@ -169,7 +201,7 @@ const NumberButton = ({ number, onClick, status }: NumberButtonProps) => {
         status === "included" && "bg-green-300 hover:bg-green-400",
       )}
     >
-      {number}
+      <p className="w-6">{number}</p>
     </Button>
   );
 };
