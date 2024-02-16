@@ -1,6 +1,8 @@
 import { CageSize } from "../lib/calculateCages";
 import { cageSizes } from "../lib/cageSizes";
 import { useSettingsContext } from "./SettingsProvider";
+import { useState } from "react";
+import { cn } from "../lib/utils";
 
 export const Cages = () => {
   return (
@@ -74,12 +76,27 @@ const Combinations = ({ combinations }: CombinationsProps) => {
   return (
     <div className="flex gap-2">
       {combinations.map((comb, i) => (
-        <div key={i} className="flex">
-          {comb.map((num, j) => (
-            <span key={j}>{num}</span>
-          ))}
-        </div>
+        <Combination key={i} combination={comb} />
       ))}
     </div>
+  );
+};
+
+type CombinationProps = { combination: number[] };
+
+const Combination = ({ combination }: CombinationProps) => {
+  const [faded, setFaded] = useState(false);
+
+  return (
+    <>
+      <div
+        className={cn("flex", faded && "text-gray-400")}
+        onClick={() => setFaded((prev) => !prev)}
+      >
+        {combination.map((num, j) => (
+          <span key={j}>{num}</span>
+        ))}
+      </div>
+    </>
   );
 };
