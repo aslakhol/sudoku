@@ -1,66 +1,54 @@
-import { findCombinations, maxSum, minSum } from "../lib/calculateCages";
+import {
+  CageSize,
+  findCombinations,
+  maxSum,
+  minSum,
+} from "../lib/calculateCages";
+import { cageSizes } from "../lib/cageSizes";
 import { useSettingsContext } from "./SettingsProvider";
 
 export const Cages = () => {
-  const cageSizes = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
   return (
     <div className="container flex flex-col gap-4 pb-12">
       {cageSizes.map((cageSize) => (
-        <CageSize key={cageSize} cageSize={cageSize} />
+        <CageSize key={cageSize.cageSize} cageSize={cageSize} />
       ))}
     </div>
   );
 };
 
-type CageSizeProps = { cageSize: number };
+type CageSizeProps = { cageSize: CageSize };
 
 const CageSize = ({ cageSize }: CageSizeProps) => {
-  const { cageTotalRange } = useSettingsContext();
-  const minTotal = cageTotalRange[0];
-  const maxTotal = cageTotalRange[1];
-  const min = minSum(cageSize);
-  const max = maxSum(cageSize);
-
-  const valuesBetweenMaxAndMin = Array.from(
-    { length: max - min + 1 },
-    (_, i) => min + i,
-  );
-
-  if (minTotal > max || maxTotal < min) {
-    return null;
-  }
-
   return (
     <div>
-      <p className="text-xl">Cages with {cageSize} squares</p>
+      <p className="text-xl">Cages with {cageSize.cageSize} squares</p>
       <div className="flex flex-col">
         <div className=" flex gap-2 font-semibold">
           <p>Total</p>
           <p>Combinations</p>
         </div>
-        {valuesBetweenMaxAndMin.map((value) => (
-          <Total key={value} cageSize={cageSize} cageTotal={value} />
+        {cageSize.cageTotals.map((total) => (
+          <Total key={total.total} cageTotal={total} />
         ))}
       </div>
     </div>
   );
 };
 
-type TotalProps = { cageSize: number; cageTotal: number };
+type TotalProps = { cageTotal: { total: number; combinations: number[][] } };
 
-const Total = ({ cageSize, cageTotal }: TotalProps) => {
-  const combinations = findCombinations(cageTotal, cageSize);
+const Total = ({ cageTotal }: TotalProps) => {
   const { includedNumbers, excludedNumbers, cageTotalRange } =
     useSettingsContext();
   const minTotal = cageTotalRange[0];
   const maxTotal = cageTotalRange[1];
 
-  if (cageTotal < minTotal || cageTotal > maxTotal) {
+  if (cageTotal.total < minTotal || cageTotal.total > maxTotal) {
     return null;
   }
 
-  const withOutExcluded = combinations.filter((comb) =>
+  const withOutExcluded = cageTotal.combinations.filter((comb) =>
     excludedNumbers.every((num) => !comb.includes(num)),
   );
 
@@ -74,7 +62,7 @@ const Total = ({ cageSize, cageTotal }: TotalProps) => {
 
   return (
     <div className="flex gap-2">
-      <p className="w-9">{cageTotal}</p>
+      <p className="w-9">{cageTotal.total}</p>
       <Combinations combinations={withIncluded} />
     </div>
   );
