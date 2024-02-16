@@ -83,6 +83,8 @@ const Content = ({ className }: ContentProps) => {
     setExcludedNumbers,
     cageTotalRange,
     setCageTotalRange,
+    cageSizes,
+    setCageSizes,
   } = useSettingsContext();
 
   const pressNumber = (number: number) => {
@@ -172,12 +174,20 @@ const Content = ({ className }: ContentProps) => {
             max={45}
           />
           <Label htmlFor="cageTotalRange">{cageTotalRange[1]}</Label>
-          {/* <Input
-            type="number"
-            id="maxTotal"
-            value={maxTotal}
-            onChange={(e) => setMaxTotal(Number(e.target.value))}
-          /> */}
+        </div>
+      </div>
+      <div className="flex flex-col gap-3 pt-4">
+        <Label htmlFor="cageSizes">Cage size</Label>
+        <div className="flex w-full max-w-sm items-center gap-1.5">
+          <Label htmlFor="cageSizes">{cageSizes[0]}</Label>
+          <Slider
+            id="cageSizes"
+            defaultValue={[cageSizes[0], cageSizes[1]]}
+            onValueChange={(value: [number, number]) => setCageSizes(value)}
+            min={1}
+            max={9}
+          />
+          <Label htmlFor="cageSizes">{cageSizes[1]}</Label>
         </div>
       </div>
     </div>

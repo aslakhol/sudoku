@@ -18,12 +18,14 @@ type CageSizeProps = { cageSize: CageSize };
 
 const CageSize = ({ cageSize }: CageSizeProps) => {
   const [faded, setFaded] = useState(false);
-  const { cageTotalRange } = useSettingsContext();
-  const minTotal = cageTotalRange[0];
-  const maxTotal = cageTotalRange[1];
+  const { cageTotalRange, cageSizes } = useSettingsContext();
+
+  if (cageSize.cageSize < cageSizes[0] || cageSize.cageSize > cageSizes[1]) {
+    return null;
+  }
 
   const filteredTotals = cageSize.cageTotals.filter(
-    (ct) => ct.total >= minTotal && ct.total <= maxTotal,
+    (ct) => ct.total >= cageTotalRange[0] && ct.total <= cageTotalRange[1],
   );
 
   if (filteredTotals.length === 0) {

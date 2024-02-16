@@ -11,8 +11,8 @@ type SettingsContextType = {
   setIncludedNumbers: Dispatch<React.SetStateAction<number[]>>;
   excludedNumbers: number[];
   setExcludedNumbers: Dispatch<React.SetStateAction<number[]>>;
-  cageSizes: number[];
-  setCageSizes: Dispatch<React.SetStateAction<number[]>>;
+  cageSizes: [number, number];
+  setCageSizes: Dispatch<React.SetStateAction<[number, number]>>;
   cageTotalRange: [number, number];
   setCageTotalRange: Dispatch<React.SetStateAction<[number, number]>>;
 };
@@ -24,9 +24,7 @@ const SettingsContext = createContext<SettingsContextType | undefined>(
 const SettingsProvider = ({ children }: { children: ReactNode }) => {
   const [includedNumbers, setIncludedNumbers] = useState<number[]>([]);
   const [excludedNumbers, setExcludedNumbers] = useState<number[]>([]);
-  const [cageSizes, setCageSizes] = useState<number[]>([
-    1, 2, 3, 4, 5, 6, 7, 8, 9,
-  ]);
+  const [cageSizes, setCageSizes] = useState<[number, number]>([1, 9]);
   const [cageTotalRange, setCageTotalRange] = useState<[number, number]>([
     1, 45,
   ]);
