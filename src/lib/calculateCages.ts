@@ -28,7 +28,7 @@ export function findCombinations(
   cageTotal: number,
   cageSize: number,
 ): number[][] {
-  const possibleDigits: number[] = Array.from({ length: 9 }, (_, i) => i + 1);
+  const possibleDigits: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   const allCombinations = generateCombinations(possibleDigits, cageSize);
 
   // Filter combinations to those whose sum matches the cage total
@@ -45,4 +45,48 @@ export const minSum = (cageSize: number) => {
 
 export const maxSum = (cageSize: number) => {
   return (cageSize * (19 - cageSize)) / 2;
+};
+
+export const findAllCombinationsForCageSize = (cageSize: number) => {
+  const min = minSum(cageSize);
+  const max = maxSum(cageSize);
+
+  const valuesBetweenMaxAndMin = Array.from(
+    { length: max - min + 1 },
+    (_, i) => min + i,
+  );
+
+  const combinationsForCageSize: Record<number, number[][]> = {};
+
+  for (const value of valuesBetweenMaxAndMin) {
+    combinationsForCageSize[value] = findCombinations(value, cageSize);
+  }
+
+  return combinationsForCageSize;
+};
+
+export const findAllCombinations = () => {
+  const allCombinations: Record<number, Record<number, number[][]>> = {};
+
+  for (let i = 1; i <= 9; i++) {
+    allCombinations[i] = findAllCombinationsForCageSize(i);
+  }
+
+  return allCombinations;
+};
+
+export const writeResultsToFile = () => {
+  const combinations = findAllCombinations();
+
+  console.log(combinations);
+
+  const filename = `combinations.json`;
+  const fileContents = JSON.stringify(combinations, null, 2);
+  const blob = new Blob([fileContents], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(url);
 };
