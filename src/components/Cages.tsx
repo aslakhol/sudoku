@@ -48,6 +48,7 @@ const CageSize = ({ cageSize }: CageSizeProps) => {
 type TotalProps = { cageTotal: { total: number; combinations: number[][] } };
 
 const Total = ({ cageTotal }: TotalProps) => {
+  const [faded, setFaded] = useState(false);
   const { includedNumbers, excludedNumbers } = useSettingsContext();
 
   const withOutExcluded = cageTotal.combinations.filter((comb) =>
@@ -63,8 +64,10 @@ const Total = ({ cageTotal }: TotalProps) => {
   }
 
   return (
-    <div className="flex gap-2">
-      <p className="w-9">{cageTotal.total}</p>
+    <div className={cn("flex gap-2", faded && "text-gray-400")}>
+      <p className="w-9" onClick={() => setFaded((prev) => !prev)}>
+        {cageTotal.total}
+      </p>
       <Combinations combinations={withIncluded} />
     </div>
   );
