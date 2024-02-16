@@ -16,7 +16,9 @@ export const Cages = () => {
 type CageSizeProps = { cageSize: number };
 
 const CageSize = ({ cageSize }: CageSizeProps) => {
-  const { minTotal, maxTotal } = useSettingsContext();
+  const { cageTotalRange } = useSettingsContext();
+  const minTotal = cageTotalRange[0];
+  const maxTotal = cageTotalRange[1];
   const min = minSum(cageSize);
   const max = maxSum(cageSize);
 
@@ -49,8 +51,10 @@ type TotalProps = { cageSize: number; cageTotal: number };
 
 const Total = ({ cageSize, cageTotal }: TotalProps) => {
   const combinations = findCombinations(cageTotal, cageSize);
-  const { includedNumbers, excludedNumbers, minTotal, maxTotal } =
+  const { includedNumbers, excludedNumbers, cageTotalRange } =
     useSettingsContext();
+  const minTotal = cageTotalRange[0];
+  const maxTotal = cageTotalRange[1];
 
   if (cageTotal < minTotal || cageTotal > maxTotal) {
     return null;

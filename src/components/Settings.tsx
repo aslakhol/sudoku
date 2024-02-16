@@ -22,7 +22,7 @@ import {
 import { useMediaQuery } from "../lib/useMediaQuery";
 import { useSettingsContext } from "./SettingsProvider";
 import { Label } from "./ui/label";
-import { Input } from "./ui/input";
+import { Slider } from "./ui/slider";
 
 export const Settings = () => {
   const [open, setOpen] = React.useState(false);
@@ -81,10 +81,8 @@ const Content = ({ className }: ContentProps) => {
     setIncludedNumbers,
     excludedNumbers,
     setExcludedNumbers,
-    minTotal,
-    setMinTotal,
-    maxTotal,
-    setMaxTotal,
+    cageTotalRange,
+    setCageTotalRange,
   } = useSettingsContext();
 
   const pressNumber = (number: number) => {
@@ -130,23 +128,24 @@ const Content = ({ className }: ContentProps) => {
         ))}
       </div>
       <div className="flex flex-col gap-2">
+        <Label htmlFor="cageTotalRange">Cage total</Label>
         <div className="flex w-full max-w-sm items-center gap-1.5">
-          <Label htmlFor="minTotal">Minimum sum</Label>
-          <Input
-            type="number"
-            id="minTotal"
-            value={minTotal}
-            onChange={(e) => setMinTotal(Number(e.target.value))}
+          <Label htmlFor="cageTotalRange">{cageTotalRange[0]}</Label>
+          <Slider
+            id="cageTotalRange"
+            defaultValue={[cageTotalRange[0], cageTotalRange[1]]}
+            onValueChange={(value: [number, number]) =>
+              setCageTotalRange(value)
+            }
+            max={45}
           />
-        </div>
-        <div className="flex w-full max-w-sm items-center gap-1.5">
-          <Label htmlFor="maxTotal">Maximum sum</Label>
-          <Input
+          <Label htmlFor="cageTotalRange">{cageTotalRange[1]}</Label>
+          {/* <Input
             type="number"
             id="maxTotal"
             value={maxTotal}
             onChange={(e) => setMaxTotal(Number(e.target.value))}
-          />
+          /> */}
         </div>
       </div>
     </div>
