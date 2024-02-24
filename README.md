@@ -2,6 +2,7 @@
 
 This is a small tool to help with solving sudoku.
 Currently there is only a tool to help solve killer cages, but in the future I might expand to other styles of sudoku.
+You can find the tool on [sudoku.aslak.io](https://sudoku.aslak.io/).
 
 ## Why?
 
